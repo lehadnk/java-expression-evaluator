@@ -26,7 +26,7 @@ public class AstBuilderTest {
         );
 
         var astBuilder = new AstBuilder();
-        var ast = astBuilder.build(tokens);
+        var ast = astBuilder.build(tokens, null);
 
         assertEquals("-", ast.operation);
         assertEquals(-6d, ast.right.value);
@@ -55,7 +55,7 @@ public class AstBuilderTest {
         );
 
         var astBuilder = new AstBuilder();
-        var ast = astBuilder.build(tokens);
+        var ast = astBuilder.build(tokens, null);
 
         assertEquals("-", ast.operation);
         assertEquals(-6d, ast.right.value);

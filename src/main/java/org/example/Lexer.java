@@ -49,11 +49,12 @@ public class Lexer {
         var buffer = "-";
         this.index++;
         var currentChar = input.charAt(this.index);
-        if (Character.isDigit(currentChar)) {
+        if (Character.isDigit(currentChar) && !this.output.isEmpty() && this.output.getLast().tokenType != TokenType.NUMBER) { // We handle cases like 80 -19, also Java17 doesn't have getLast
             buffer += this.consumeNumber();
             this.output.add(new Token(TokenType.NUMBER, Double.valueOf(buffer)));
         } else {
             this.output.add(new Token(TokenType.OPERATOR, "-"));
+            this.index--;
         }
     }
 

@@ -5,9 +5,11 @@ import java.util.List;
 public class AstBuilder {
     private int index = 0;
     private List<Token> tokens;
+    private String expession;
 
-    public AstNode build(List<Token> tokens) {
+    public AstNode build(List<Token> tokens, String expession) {
         this.tokens = tokens;
+        this.expession = expession;
         return this.expression();
     }
 
@@ -64,17 +66,18 @@ public class AstBuilder {
             if (this.current().tokenType == TokenType.RPAREN) {
                 this.consume();
             } else {
-                throw new RuntimeException("Missing closing parenthesis at token " + this.index);
+                throw new IllegalArgumentException("Missing closing parenthesis at token " + this.index + ". Expression: " + this.expession);
             }
 
             return node;
         }
 
-//        if (token.operator.equals("-")) {
-//            this.consume();
-//            return new AstNode("-", 0d, this.factor());
-//        }
+        // Unary + and -
+        if (token.operator.equals("+") || token.operator.equals("-")) {
+            this.consume();
+            return new AstNode(token.operator, 0d, this.factor());
+        }
 
-        throw new RuntimeException("Unexpected token " + token.tokenType);
+        throw new IllegalArgumentException("Unexpected token " + token.tokenType + ". Expression: " + this.expession);
     }
 }
